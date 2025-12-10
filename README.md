@@ -1,3 +1,21 @@
 # StosVPN
 
 A VPN for SideStore and StikJIT that is much stabler and supports offline JIT Enabling.
+
+## Download IPA
+
+You can download the latest IPA build from GitHub Actions:
+
+1. Go to the [Actions tab](../../actions/workflows/build.yml) in this repository
+2. Click on the latest successful workflow run
+3. Scroll down to the "Artifacts" section
+4. Download the `StosVPN-IPA` artifact
+5. Extract the ZIP file to get `StosVPN-fakesigned.ipa`
+
+Alternatively, trigger a new build manually:
+1. Go to the [Actions tab](../../actions/workflows/build.yml)
+2. Click "Run workflow" button
+3. Select the branch and click "Run workflow"
+4. Wait for the build to complete and download the artifact
+
+**Note:** The IPA is fake-signed using `ldid` and is intended for use with SideStore or similar sideloading tools.
