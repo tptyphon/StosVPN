@@ -1,5 +1,6 @@
 CodeSigning.xcconfig
 *.ipa
 /build
+/Payload
 
 **/.DS_Store

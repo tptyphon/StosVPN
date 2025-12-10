@@ -17,7 +17,16 @@ jobs:
               run: brew install ldid
 
             - name: Select Xcode version
-              run: sudo xcode-select -s /Applications/Xcode_16.2.app
+              run: |
+                  # Use the latest available Xcode version
+                  XCODE_PATH=$(ls -1td /Applications/Xcode*.app 2>/dev/null | head -n 1)
+                  if [ -z "$XCODE_PATH" ]; then
+                    echo "No Xcode installation found, using default"
+                  else
+                    echo "Using Xcode at: $XCODE_PATH"
+                    sudo xcode-select -s "$XCODE_PATH"
+                  fi
+                  xcode-select -p
 
             - name: Build Xcode Archive
               run: |
@@ -34,7 +43,10 @@ jobs:
               run: mkdir -p Payload
 
             - name: Copy App to Payload
-              run: cp -R build/StosVPN.xcarchive/Products/Applications/StosVPN.app Payload/StosVPN.app
+              run: |
+                  cp -R build/StosVPN.xcarchive/Products/Applications/StosVPN.app Payload/StosVPN.app
+                  echo "App copied to Payload directory"
+                  ls -la Payload/
 
             - name: Find and Sign App Extension
               run: |
@@ -58,9 +70,12 @@ jobs:
             - name: Create IPA
               run: |
                   zip -r ./StosVPN-fakesigned.ipa Payload
+                  echo "IPA created successfully"
+                  ls -lh StosVPN-fakesigned.ipa
+                  file StosVPN-fakesigned.ipa
 
             - name: Upload IPA Artifact
               uses: actions/upload-artifact@v4
               with:
-                  name: StosVPN-IPA.ipa
+                  name: StosVPN-IPA
                   path: StosVPN-fakesigned.ipa
